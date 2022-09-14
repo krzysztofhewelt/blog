@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+    <head th:include="fragments/header :: head (title='403')">
+      <title>Page title</title>
+    </head>
+    <body class="antialiased">
+        <section class="flex flex-col w-full min-h-screen items-center justify-center bg-gray-200 mx-auto text-center">
+              <h2 class="mb-8 font-extrabold text-9xl">
+               403
+              </h2>
+              <p class="text-2xl font-semibold md:text-3xl">Forbidden</p>
+              <p>You don't have access to this page!</p>
+              <a href="/" class="px-8 mt-5 py-3 font-semibold no-underline rounded bg-green-500 hover:bg-green-600">Go to the main page</a>
+        </section>
+    </body>
+</html>

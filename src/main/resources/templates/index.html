@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+    <head th:include="fragments/header :: head (title='Main page')">
+        <title>Page title</title>
+    </head>
+    <body class="antialiased text-black bg-white">
+        <div class="max-w-3xl px-4 mx-auto md:px-6 md:max-w-7xl md:px-0">
+            <div class="flex flex-col min-h-screen">
+                <header th:replace="fragments/header :: header (isInAdministrationPanel = false)"></header>
+                <main th:replace="posts/showPosts :: showPosts"></main>
+                <footer th:replace="fragments/footer :: footer (isInAdministrationPanel = false)"></footer>
+            </div>
+        </div>
+    </body>
+</html>

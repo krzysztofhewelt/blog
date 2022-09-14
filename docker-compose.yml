@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  server:
+    container_name: bloggy_server
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/app
+    stdin_open: true
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/bloggy
+      - SPRING_DATASOURCE_USERNAME=example
+      - SPRING_DATASOURCE_PASSWORD=examplepassword123
+      - SPRING_SQL_INIT_MODE=never
+    depends_on:
+      - database
+    ports:
+      - "8080:8080"
+    networks:
+      - bloggy_network
+
+  database:
+    container_name: bloggy_postgres
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "example"
+      POSTGRES_PASSWORD: "examplepassword123"
+      POSTGRES_DB: "bloggy"
+    volumes:
+      - db_data:/var/lib/postgresql
+    networks:
+      - bloggy_network
+
+volumes:
+  db_data:
+
+networks:
+  bloggy_network:

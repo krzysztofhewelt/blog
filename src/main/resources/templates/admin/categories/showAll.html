@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+    <head th:include="fragments/header :: head (title='Administration panel - categories')">
+        <title>Page title</title>
+    </head>
+    <body class="antialiased text-black bg-white">
+        <div class="max-w-3xl px-4 mx-auto md:px-6 md:max-w-7xl md:px-0">
+            <div class="flex flex-col justify-between h-screen">
+                <div th:replace="fragments/header :: header (isInAdministrationPanel = true)"></div>
+
+                <main class="mb-auto">
+                    <div>
+                        <div class="pt-6 pb-6 space-y-2 md:space-y-5">
+                            <h1 class="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 md:text-4xl md:leading-10 md:text-6xl md:leading-14">
+                                Administration panel
+                            </h1>
+                            <p class="text-lg leading-7 text-gray-500">Manage categories</p>
+                        </div>
+                        <div class="flex justify-end text-base font-medium leading-6 mb-2">
+                            <a class="text-green-500 hover:text-green-600 text-xl" aria-label="all categories" href="/categories/create">Create new category &rarr;</a>
+                        </div>
+                        <div class="flex flex-col">
+                            <div class="-my-2 overflow-x-auto md:-mx-6 lg:-mx-8">
+                                <div class="py-2 align-middle inline-block min-w-full md:px-6 lg:px-8">
+                                    <div class="shadow overflow-hidden border-b border-gray-200 md:rounded-lg">
+                                        <table class="min-w-full divide-y divide-gray-200">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th scope="col" class="w-1/3 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                        Category name
+                                                    </th>
+                                                    <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                        Frequency of use in posts
+                                                    </th>
+                                                    <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                        Created at
+                                                    </th>
+                                                    <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                        Updated at
+                                                    </th>
+                                                    <th scope="col" class="relative px-6 py-3"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                <tr th:if="${categories.isEmpty()}">
+                                                    <td colspan="5" class="px-3 py-4 whitespace-nowrap text-center">No categories.</td>
+                                                </tr>
+
+                                                <tr th:each="category : ${categories}">
+                                                    <td class="px-3 py-4 whitespace-nowrap" th:text="${category.name}"></td>
+                                                    <td class="px-3 py-4 whitespace-nowrap" th:text="${category.getPosts.size}"></td>
+                                                    <td class="px-3 py-4 whitespace-nowrap" th:text="${#dates.format(category.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
+                                                    <td class="px-3 py-4 whitespace-nowrap" th:text="${#dates.format(category.updatedAt, 'dd-MM-yyyy HH:mm')}"></td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                        <a class="p-2 text-blue-600 hover:text-blue-900" th:href="@{'/categories/edit/' + ${category.id}}">Edit</a>
+                                                        <form th:action="@{'/categories/delete/' + ${category.id}}" th:method="delete" class="inline">
+                                                            <input type="submit" class="p-2 text-red-600 hover:text-red-900 bg-transparent font-medium cursor-pointer" value="Delete">
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <div th:replace="utils/pagination :: paginate (currentPage = ${currentPage}, totalPages = ${totalPages}, totalItems = ${totalItems}, pageUrl = '/admin/categories/')"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+
+                <div th:replace="fragments/footer :: footer (isInAdministrationPanel = true)"></div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+    <head th:include="fragments/header :: head (title='User view')">
+        <title>Page title</title>
+    </head>
+    <body class="antialiased text-black bg-white">
+        <div class="max-w-3xl px-4 mx-auto md:px-6 md:max-w-7xl md:px-0">
+            <div class="flex flex-col justify-between h-screen">
+                <header th:replace="fragments/header :: header (isInAdministrationPanel = false)"></header>
+
+                <main class="mb-auto">
+                    <div class="divide-y divide-gray-200">
+                        <div class="pt-6 pb-6 space-y-2 md:space-y-5"
+                             th:if="${user} == null">
+                            <h1 class="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 md:text-3xl md:leading-10 md:text-5xl md:leading-14">
+                                This user does not found!
+                            </h1>
+                        </div>
+
+                        <th:block th:if="${user} != null">
+                            <div class="pt-6 pb-2 space-y-2 md:space-y-5">
+                                <h1 class="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 md:text-3xl md:leading-10 md:text-5xl md:leading-14" th:text="${'Users profile - ' + user.username}"> </h1>
+                            </div>
+                            <div class="divide-y divide-gray-200">
+                                <div class="grid grid-cols-3 gap-6 mt-8">
+                                    <div class="col-span-3 md:col-span-1">
+                                        <h1 class="text-xl mb-4 font-extrabold leading-9 tracking-tight text-gray-900 md:text-2xl md:leading-10 md:text-3xl md:leading-14 border-b-2 border-gray-200">Account informations</h1>
+                                        <div class="prose max-w-none" th:text="${'Username: ' + user.username}"></div>
+                                        <div class="prose max-w-none" th:text="${'Registered at: ' + #dates.format(user.registeredAt, 'dd-MM-yyyy HH:mm')}"></div>
+                                        <div class="prose max-w-none" th:text="${'Posts: ' + user.posts.size}"></div>
+                                        <div class="prose max-w-none" th:text="${'Comments: ' + user.comments.size}"></div>
+                                        <div class="prose max-w-none mt-2">
+                                            <a th:href="@{'/user/change-password'}" class="text-xl font-medium uppercase text-green-500 hover:text-green-600">Change password</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-span-3 md:col-span-1">
+                                        <h1 class="text-xl mb-4 font-extrabold leading-9 tracking-tight text-gray-900 md:text-2xl md:leading-10 md:text-3xl md:leading-14 border-b-2 border-gray-200">Latest posts</h1>
+                                        <div class="mb-4" th:if="${user.posts.isEmpty()}">
+                                            <div class="text-center">No posts.</div>
+                                        </div>
+                                        <div class="mb-4" th:each="post, iterator : ${user.posts}" th:if="${iterator.index <= 5}">
+                                            <a class="mr-3-sm font-medium uppercase text-green-500 hover:text-green-600" th:text="${post.title}" th:href="@{'/posts/show/' + ${post.slug}}"></a>
+                                            <div class="block text-xs text-gray-400" th:text="${#dates.format(post.createdAt, 'dd-MM-yyyy HH:mm')}"></div>
+                                        </div>
+                                        <div class="flex justify-end text-base font-medium leading-6" th:if="${user.posts.size > 5}">
+                                            <a class="text-green-500 hover:text-green-600" aria-label="all posts" th:href="@{'/users/' + ${user.username} + '/posts'}">All posts &rarr;</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-span-3 md:col-span-1">
+                                        <h1 class="text-xl mb-4 font-extrabold leading-9 tracking-tight text-gray-900 md:text-2xl md:leading-10 md:text-3xl md:leading-14 border-b-2 border-gray-200">Latest comments</h1>
+                                        <div class="mb-4" th:if="${user.comments.isEmpty()}">
+                                            <div class="text-center">No comments.</div>
+                                        </div>
+                                        <div class="mb-4" th:each="comment, iterator : ${user.comments}" th:if="${iterator.index <= 5}">
+                                            <a class="mr-3-sm font-medium uppercase text-green-500 hover:text-green-600" th:text="${comment.post.title}" th:href="@{'/posts/show/' + ${comment.post.slug} + '#' + ${comment.id}}"></a>
+                                            <div class="block text-xs text-gray-400" th:text="${#strings.abbreviate(comment.content,70)}"></div>
+                                            <div class="block text-xs text-gray-400" th:text="${#dates.format(comment.createdAt, 'dd-MM-yyyy HH:mm')}"></div>
+                                        </div>
+                                        <div class="flex justify-end text-base font-medium leading-6" th:if="${user.comments.size > 5}">
+                                            <a class="text-green-500 hover:text-green-600" aria-label="all posts" th:href="@{'/comments/user/' + ${user.username}}">All comments &rarr;</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                    </div>
+                </main>
+
+                <footer th:replace="fragments/footer :: footer (isInAdministrationPanel = false)"></footer>
+            </div>
+        </div>
+    </body>
+</html>

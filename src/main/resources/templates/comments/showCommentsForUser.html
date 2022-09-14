@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+  <head th:include="fragments/header :: head (title='Comments for user - ' + ${username})">
+    <title>Page title</title>
+  </head>
+  <body class="antialiased text-black bg-white">
+    <div class="max-w-3xl px-4 mx-auto md:px-6 md:max-w-7xl md:px-0">
+      <div class="flex flex-col justify-between h-screen">
+        <header th:replace="fragments/header :: header (isInAdministrationPanel = false)"></header>
+    
+        <main class="mb-auto" th:fragment="showPosts">
+          <div class="divide-y divide-gray-200">
+            <div class="pt-6 pb-6 space-y-2 md:space-y-5">
+              <h1 class="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 md:text-4xl md:leading-10 md:text-6xl md:leading-14">
+                All comments for user <q>[[${username}]]</q>
+              </h1>
+            </div>
+            <h3 class="text-4xl font-extrabold leading-9 py-4 tracking-tight text-gray-900 md:text-4xl md:leading-10 md:text-3xl md:leading-14 text-center"
+                th:if="${comments.isEmpty()}">
+              No comments for this user.
+            </h3>
+            <ul class="divide-y divide-gray-200" th:each="comment : ${comments}">
+              <li class="py-12">
+                <article>
+                  <div class="space-y-2 md:grid md:grid-cols-4 md:space-y-0 md:items-baseline">
+                    <div class="text-base font-medium leading-6 text-gray-500" th:text="${#dates.format(comment.createdAt, 'dd-MM-yyyy HH:mm')}"></div>
+                    <div class="space-y-5 md:col-span-3">
+                      <div class="space-y-6">
+                        <div>
+                          <h2 class="text-2xl font-bold leading-8 tracking-tight">
+                            <a class="text-gray-900" th:href="@{'/posts/show/' + ${comment.post.slug}}" th:text="${comment.post.title }"></a>
+                          </h2>
+                        </div>
+                        <div class="prose text-gray-500 max-w-none" th:utext="${#strings.abbreviate(comment.content ,150)}"></div>
+                      </div>
+                      <div class="text-base font-medium leading-6">
+                        <a class="text-primary-500 text-green-500 hover:text-green-600" aria-label="read more" th:href="@{'/posts/show/' + ${comment.post.slug} + '#' + ${comment.id}}">Show this comment in post &rarr;</a>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </li>
+            </ul>
+          </div>
+    
+          <div th:replace="utils/pagination :: paginate (currentPage = ${currentPage}, totalPages = ${totalPages}, totalItems = ${totalItems}, pageUrl = ${pageUrl})"></div>
+        </main>
+    
+        <footer th:replace="fragments/footer :: footer (isInAdministrationPanel = false)"></footer>
+      </div>
+    </div>
+  </body>
+</html>

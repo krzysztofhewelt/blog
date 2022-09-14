@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+    <head th:include="fragments/header :: head (title='Administration panel')">
+        <title>Page title</title>
+    </head>
+    <body class="antialiased text-black bg-white">
+        <div class="max-w-3xl px-4 mx-auto md:px-6 md:max-w-7xl md:px-0">
+            <div class="flex flex-col justify-between h-screen">
+                <header th:replace="fragments/header :: header (isInAdministrationPanel = true)"></header>
+
+                <main class="mb-auto">
+                    <div class="divide-y divide-gray-200">
+                        <div class="pt-6 pb-6 space-y-2 md:space-y-5">
+                            <h1 class="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 md:text-4xl md:leading-10 md:text-6xl md:leading-14" th:text="'Welcome, ' + ${#authentication.getPrincipal().getUsername()}"></h1>
+                            <p class="text-lg leading-7 text-gray-500">You are in administration panel</p>
+                        </div>
+                    </div>
+                </main>
+
+                <footer th:replace="fragments/footer :: footer (isInAdministrationPanel = true)"></footer>
+            </div>
+        </div>
+    </body>
+</html>

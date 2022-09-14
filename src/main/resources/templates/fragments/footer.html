@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+    <head>
+        <title>Page title</title>
+    </head>
+    <body>
+        <footer class="bottom-0"
+                th:fragment="footer (isInAdministrationPanel)">
+            <div class="flex flex-col flex-end items-center mt-16">
+                <div class="flex mb-2 space-x-2 text-sm text-gray-500">
+                    <div>Bloggy</div>
+                    <div> &bull; </div>
+                    <div>&copy; 2022</div>
+                    <div th:if="${isInAdministrationPanel == true}">Administration panel</div>
+                </div>
+                <div class="mb-8 text-sm text-gray-500">
+                    Created with love for users.
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>

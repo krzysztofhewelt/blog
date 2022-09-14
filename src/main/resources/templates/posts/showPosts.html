@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+    <head th:include="fragments/header :: head (title='Create new post')">
+        <title>Page title</title>
+    </head>
+    <body class="antialiased text-black bg-white">
+        <div class="max-w-3xl px-4 mx-auto md:px-6 md:max-w-7xl md:px-0">
+            <div class="flex flex-col justify-between h-screen">
+                <header th:replace="fragments/header :: header (isInAdministrationPanel = false)"></header>
+
+                <main class="mb-auto" th:fragment="showPosts">
+                    <div class="divide-y divide-gray-200">
+                        <div class="pt-6 pb-6 space-y-2 md:space-y-5">
+                            <h1 class="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 md:text-4xl md:leading-10 md:text-6xl md:leading-14">
+                                <th:block th:if="${recentPosts != null}">Latest posts</th:block>
+                                <th:block th:if="${category != null}">Category posts: <b th:text="${category.name}"></b></th:block>
+                                <th:block th:if="${tag != null}">Tag posts: <b th:text="${tag.name}"></b></th:block>
+                                <th:block th:if="${user != null}">User's posts: <b th:text="${user}"></b></th:block>
+                                <th:block th:if="${posts != null && category == null && recentPosts == null && tag == null && user == null}">All posts</th:block>
+                            </h1>
+                            <div class="flex justify-end text-base font-medium leading-6" sec:authorize="hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')">
+                                <a class="text-green-500 hover:text-green-600" aria-label="wszystkie posty" href="/posts/create">Create new post &rarr;</a>
+                            </div>
+                        </div>
+                        <h3 class="text-4xl font-extrabold leading-9 py-4 tracking-tight text-gray-900 md:text-4xl md:leading-10 md:text-3xl md:leading-14 text-center"
+                            th:if="${posts.isEmpty()}">
+                            No posts.
+                        </h3>
+                        <ul class="divide-y divide-gray-200" th:each="post : ${posts}">
+                            <li class="py-12">
+                                <article>
+                                    <div class="space-y-2 md:grid md:grid-cols-4 md:space-y-0 md:items-baseline">
+                                        <div class="text-base font-medium leading-6 text-gray-500" th:text="${#dates.format(post.createdAt, 'dd-MM-yyyy HH:mm')}"></div>
+                                        <div class="space-y-5 md:col-span-3">
+                                            <div class="space-y-6">
+                                                <div>
+                                                    <h2 class="text-2xl font-bold leading-8 tracking-tight">
+                                                        <a class="text-gray-900" th:href="@{'/posts/show/' + ${post.slug}}" th:text="${post.title }"></a>
+                                                    </h2>
+                                                    <div>
+                                                        <div class="block">
+                                                            <b class="mr-2">Tags:</b>
+                                                            <span th:each="tag : ${post.tags}">
+                                                                <a class="mr-3 text-sm font-medium uppercase text-green-500 hover:text-green-600" th:href="@{'/tags/' + ${tag.slug}}" th:text="${tag.name}"></a>
+                                                            </span>
+                                                        </div>
+                                                        <div class="block">
+                                                            <b class="mr-2">Categories:</b>
+                                                            <span th:each="category : ${post.categories}">
+                                                                <a class="mr-3 text-sm font-medium uppercase text-green-500 hover:text-green-600" th:href="@{'/categories/' + ${category.slug}}" th:text="${category.name}"></a>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="prose text-gray-500 max-w-none" th:utext="${#strings.abbreviate(post.content,150)}"></div>
+                                            </div>
+                                            <div class="text-base font-medium leading-6">
+                                                <a class="text-primary-500 text-green-500 hover:text-green-600" aria-label="read more" th:href="@{'/posts/show/' + ${post.slug}}">Read more &rarr;</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <th:block th:if="${currentPage != null}">
+                        <div th:replace="utils/pagination :: paginate (currentPage = ${currentPage}, totalPages = ${totalPages}, totalItems = ${totalItems}, pageUrl = ${pageUrl})"></div>
+                    </th:block>
+
+                    <div th:if="${currentPage == null && posts.size() == 5}" class="flex justify-end text-base font-medium leading-6">
+                        <a class="text-green-500 hover:text-green-600" aria-label="wszystkie posty" href="/posts">All posts &rarr;</a>
+                    </div>
+                </main>
+
+                <footer th:replace="fragments/footer :: footer (isInAdministrationPanel = false)"></footer>
+            </div>
+        </div>
+    </body>
+</html>

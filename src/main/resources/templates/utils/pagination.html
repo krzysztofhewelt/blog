@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Page title</title>
+    </head>
+    <body>
+        <div th:fragment="paginate (currentPage, totalPages, totalItems, pageUrl)"
+             class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+            <div class="flex flex-1 items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-700">
+                        Showing
+                        <span class="font-medium" th:text="${currentPage}"></span>
+                        to
+                        <span class="font-medium" th:text="${totalPages}"></span>
+                        of
+                        <span class="font-medium" th:text="${totalItems}"></span>
+                        results
+                    </p>
+                </div>
+                <div th:if="${totalPages > 1}">
+                    <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                        <a th:href="@{${pageUrl} + ${currentPage - 1}}" th:if="${currentPage - 1 >= 1}" class="relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20">
+                            &lt;
+                        </a>
+
+                        <th:block th:if="${totalPages > 6}">
+                            <a th:href="@{${pageUrl} + '1'}" th:classappend="${currentPage == 1 ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600' : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'}" class="relative inline-flex items-center border px-4 py-2 text-sm font-medium focus:z-20">
+                                1
+                            </a>
+
+                            <th:block th:if="${currentPage - 1 <= 2}">
+                                <a th:href="@{${pageUrl} + ${i}}" th:each="i: ${#numbers.sequence(2, 4)}" th:classappend="${currentPage == i ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600' : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'}" class="relative inline-flex items-center border px-4 py-2 text-sm font-medium focus:z-20" th:text="${i}"></a>
+                            </th:block>
+                            <th:block th:if="${totalPages - currentPage <= 2}">
+                                <span th:if="${currentPage - 1 > 2}" class="relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700">...</span>
+                                <a th:href="@{${pageUrl} + ${i}}" th:each="i: ${#numbers.sequence(totalPages-3, totalPages-1)}" th:classappend="${currentPage == i ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600' : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'}" class="relative inline-flex items-center border px-4 py-2 text-sm font-medium focus:z-20" th:text="${i}"></a>
+                            </th:block>
+
+                            <th:block th:if="${currentPage - 1 > 2 && totalPages - currentPage > 2}">
+                                <span class="relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700">...</span>
+                                <a th:href="@{${pageUrl} + ${i}}" th:each="i: ${#numbers.sequence(currentPage-2, currentPage+2)}" th:classappend="${currentPage == i ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600' : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'}" class="relative inline-flex items-center border px-4 py-2 text-sm font-medium focus:z-20" th:text="${i}"></a>
+                            </th:block>
+
+                            <span th:if="${totalPages - currentPage > 2}" class="relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700">...</span>
+
+                            <a th:href="@{${pageUrl} + ${totalPages}}" th:classappend="${currentPage == totalPages ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600' : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'}" class="relative inline-flex items-center border px-4 py-2 text-sm font-medium focus:z-20" th:text="${totalPages}"></a>
+                        </th:block>
+
+                        <th:block th:if="${totalPages <= 6}">
+                            <a th:href="@{${pageUrl} + ${i}}" th:each="i: ${#numbers.sequence(1, totalPages)}" th:classappend="${currentPage == i ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600' : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'}" class="relative inline-flex items-center border px-4 py-2 text-sm font-medium focus:z-20" th:text="${i}"></a>
+                        </th:block>
+
+                        <a th:href="@{${pageUrl} + ${currentPage + 1}}" th:if="${currentPage + 1 <= totalPages}" class="relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20">
+                            &gt;
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+    <head th:include="fragments/header :: head (title='Administration panel - editing the tag')">
+        <title>Page title</title>
+    </head>
+    <body class="antialiased text-black bg-white">
+        <div class="max-w-3xl px-4 mx-auto md:px-6 md:max-w-7xl md:px-0">
+            <div class="flex flex-col justify-between h-screen">
+                <header th:replace="fragments/header :: header (isInAdministrationPanel = true)"></header>
+
+                <main class="mb-auto">
+                    <div class="divide-y divide-gray-200">
+                        <div class="pt-6 pb-6 space-y-2 md:space-y-5">
+                            <h1 class="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 md:text-4xl md:leading-10 md:text-6xl md:leading-14">
+                                Editing the tag
+                            </h1>
+                        </div>
+                        <div class="divide-y divide-gray-200">
+                            <form action="#" th:action="@{'/tags/edit/' + ${tag.id}}" th:object="${tag}" method="post">
+                                <div class="shadow overflow-hidden md:rounded-md">
+                                    <div class="px-4 py-5 bg-white md:p-6">
+                                        <div class="grid grid-cols-6 gap-6">
+                                            <div class="col-span-6 md:col-span-4">
+                                                <label for="name" class="block text-sm font-medium text-gray-700">Tag name</label>
+                                                <input type="text" th:value="${tag.name}" name="name" id="name" class="mt-1 pl-4 pr-8 w-full transition ease-in-out rounded-md border border-gray-300 shadow-sm py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-gray-100 focus:ring-green-500">
+                                                <div th:each="err : ${#fields.errors('name')}" th:text="${err}" class="text-red-500 font-bold"></div>
+                                                <div class="text-red-500 font-bold" th:if="${errorExists != null}" th:text="${errorExists}"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="px-4 py-3 bg-gray-50 text-right md:px-6">
+                                        <input type="submit" value="Submit" class="inline-flex justify-center transition ease-in-out cursor-pointer items-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-sm font-bold text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 no-underline">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </main>
+
+                <footer th:replace="fragments/footer :: footer (isInAdministrationPanel = true)"></footer>
+            </div>
+        </div>
+    </body>
+</html>

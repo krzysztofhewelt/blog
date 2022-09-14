@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+    <head th:include="fragments/header :: head (title='Create new post')">
+        <title>Page title</title>
+    </head>
+    <body class="antialiased text-black bg-white">
+        <div class="max-w-3xl px-4 mx-auto md:px-6 md:max-w-7xl md:px-0">
+            <div class="flex flex-col justify-between h-screen">
+                <header th:replace="fragments/header :: header (isInAdministrationPanel = false)"></header>
+
+                <main class="mb-auto">
+                    <div class="divide-y divide-gray-200">
+                        <div class="pt-6 pb-6 space-y-2 md:space-y-5">
+                            <h1 class="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 md:text-4xl md:leading-10 md:text-6xl md:leading-14">
+                                Adding new posts
+                            </h1>
+                        </div>
+                        <div class="divide-y divide-gray-200">
+                            <form action="#"
+                                  th:action="@{/posts/create}"
+                                  th:object="${post}"
+                                  method="post"
+                                  onSubmit="prepareForSubmit()">
+                                <div class="shadow overflow-hidden md:rounded-md">
+                                    <div class="px-4 py-5 bg-white md:p-6">
+                                        <div class="grid grid-cols-12 gap-6">
+                                            <div class="col-span-12 md:col-span-4">
+                                                <label for="title" class="block text-sm font-medium text-gray-700">
+                                                    Post title
+                                                </label>
+                                                <input type="text" name="title" id="title" class="mt-1 pl-4 pr-8 w-full transition ease-in-out rounded-md border border-gray-300 shadow-sm py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-gray-100 focus:ring-green-500">
+                                                <div th:each="err : ${#fields.errors('title')}"
+                                                      th:text="${err}"
+                                                      class="text-red-500 font-bold"></div>
+                                            </div>
+                                            <div class="col-span-12 md:col-span-4">
+                                                <label for="tags" class="block text-sm font-medium text-gray-700">Tags</label>
+                                                <select x-cloak class="hidden" id="tags">
+                                                    <option th:each="tag : ${tags}"
+                                                            th:value="${tag.id}"
+                                                            th:text="${tag.name}"></option>
+                                                </select>
+
+                                                <div x-data="dropdown()" class="w-full items-center mx-auto" x-init="loadOptions('tags')">
+                                                    <input name="tags" type="hidden" :value="selectedValues()">
+                                                    <th:block th:insert="utils/multipleSelect :: multipleSelect"></th:block>
+                                                </div>
+                                            </div>
+                                            <div class="col-span-12 md:col-span-4">
+                                                <label for="categories" class="block text-sm font-medium text-gray-700">Categories</label>
+                                                <select x-cloak class="hidden" id="categories">
+                                                    <th:block th:each="category : ${categories}">
+                                                        <option th:value="${category.id}" th:text="${category.name}"></option>
+                                                    </th:block>
+                                                </select>
+
+                                                <div x-data="dropdown()" class="w-full items-center mx-auto" x-init="loadOptions('categories')">
+                                                    <input name="categories" type="hidden" :value="selectedValues()">
+                                                    <th:block th:insert="utils/multipleSelect :: multipleSelect"></th:block>
+                                                </div>
+                                            </div>
+                                            <div class="col-span-12">
+                                                <label for="editor" class="block text-sm font-medium text-gray-700 mb-4">Post content</label>
+                                                <div class="block w-full h-80 mb-24">
+                                                    <div id="editor"></div>
+                                                </div>
+                                                <textarea name="content" class="hidden" id="hiddenArea"></textarea>
+                                                <div th:each="err : ${#fields.errors('content')}" th:text="${err}" class="text-red-500 font-bold"></div>
+                                            </div>
+                                        </div>
+                                        <div class="px-4 py-3 bg-gray-50 text-right md:px-6">
+                                            <input type="submit" value="Submit" class="inline-flex justify-center transition ease-in-out cursor-pointer items-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-sm font-bold text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 no-underline">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </main>
+
+                <footer th:replace="fragments/footer :: footer (isInAdministrationPanel = false)"></footer>
+            </div>
+        </div>
+    </body>
+    <script>
+        function prepareForSubmit()
+        {
+            const p = document.querySelector(".ql-editor")
+            let myInput = document.getElementsByName("content")[0]
+            myInput.innerHTML = p.innerHTML
+        }
+    </script>
+</html>

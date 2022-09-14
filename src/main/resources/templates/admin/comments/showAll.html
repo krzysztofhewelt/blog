@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+    <head th:include="fragments/header :: head (title='Administration panel - comments')">
+        <title>Page title</title>
+    </head>
+    <body class="antialiased text-black bg-white">
+        <div class="max-w-3xl px-4 mx-auto md:px-6 md:max-w-7xl md:px-0">
+            <div class="flex flex-col justify-between h-screen">
+                <header th:replace="fragments/header :: header (isInAdministrationPanel = true)"></header>
+
+                <main class="mb-auto">
+                    <div>
+                        <div class="pt-6 pb-6 space-y-2 md:space-y-5">
+                            <h1 class="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 md:text-4xl md:leading-10 md:text-6xl md:leading-14">
+                                Administration panel
+                            </h1>
+                            <p class="text-lg leading-7 text-gray-500">Manage comments</p>
+                        </div>
+                        <div class="flex flex-col">
+                            <div class="-my-2 overflow-x-auto md:-mx-6 md:-mx-8">
+                                <div class="py-2 align-middle inline-block min-w-full md:px-6 md:px-8">
+                                    <div class="shadow overflow-hidden border-b border-gray-200 md:rounded-lg">
+                                        <table class="min-w-full divide-y divide-gray-200">
+                                            <thead class="bg-gray-50">
+                                            <tr>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Comment post
+                                                </th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Created at
+                                                </th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Author
+                                                </th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Content
+                                                </th>
+                                                <th scope="col" class="relative px-6 py-3"></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-200">
+                                            <tr th:if="${comments.isEmpty()}">
+                                                <td colspan="4" class="px-3 py-4 whitespace-nowrap text-center">No comments.</td>
+                                            </tr>
+                                            <tr th:each="comment : ${comments}">
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <a th:href="@{'/posts/show/' + ${comment.post.slug}}" th:text="${comment.post.title}"></a>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap" th:text="${#dates.format(comment.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="flex items-center">
+                                                        <div>
+                                                            <a class="text-sm font-medium text-gray-900" th:text="${comment.user.username}" th:href="@{'/users/' + ${comment.user.username}}"></a>
+                                                            <div class="text-sm text-gray-500" th:text="${comment.user.email}"></div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap" th:text="${comment.content}"></td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                    <a class="p-2 text-gray-600 hover:text-gray-900" th:href="@{'/posts/show/' + ${comment.post.slug} + '#' + ${comment.id}}">View</a>
+                                                    <form th:action="@{'/comments/delete/' + ${comment.id}}" th:method="delete" class="inline">
+                                                        <input type="submit" class="p-2 text-red-600 hover:text-red-900 bg-transparent font-medium cursor-pointer" value="Delete">
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <div th:replace="utils/pagination :: paginate (currentPage = ${currentPage}, totalPages = ${totalPages}, totalItems = ${totalItems}, pageUrl = '/admin/posts/')"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+
+                <footer th:replace="fragments/footer :: footer (isInAdministrationPanel = true)"></footer>
+            </div>
+        </div>
+    </body>
+</html>
