@@ -6,7 +6,7 @@
     <a href="#features">Features</a>&nbsp;&nbsp; | &nbsp;
     <a href="#getting-started">Getting started</a>&nbsp; | &nbsp;
     <a href="#configuration">Configuration</a>&nbsp; | &nbsp;
-    <a href="#used-technologies">Technologies</a>&nbsp; | &nbsp; 
+    <a href="#used-technologies-and-tools">Technologies and tools</a>&nbsp; | &nbsp; 
     <a href="#screenshots">Screenshots</a>&nbsp; | &nbsp;
     <a href="#license">License</a>
 </p>
@@ -65,13 +65,14 @@ environment:
   POSTGRES_DB: "bloggy"
 ```
 
-# Used technologies
+# Used technologies and tools
 - Java v17
 - Spring Boot 3.0.0
 - PostgreSQL
 - Tailwind CSS v3.1.8
 - Thymeleaf
 - Docker and Docker Compose
+- IDE: Jetbrains IntelliJ
 
 # Screenshots
 <details>
