@@ -75,16 +75,13 @@ environment:
 - IDE: Jetbrains IntelliJ
 
 # Screenshots
-<details>
-    <summary>Click to show</summary>
-    <img src="screenshots/post_view.jpg" alt="post view">
-    <img src="screenshots/tags.jpg" alt="tags">
-    <img src="screenshots/categories.jpg" alt="categories">
-    <img src="screenshots/user_dashboard.jpg" alt="user dashboard">
-    <img src="screenshots/admin_panel_example.jpg" alt="admin panel example">
-    <img src="screenshots/user_posts.jpg" alt="user posts">
-    <img src="screenshots/user_comments.jpg" alt="user comments">
-</details>
+<img src="screenshots/post_view.jpg" alt="post view">
+<img src="screenshots/tags.jpg" alt="tags">
+<img src="screenshots/categories.jpg" alt="categories">
+<img src="screenshots/user_dashboard.jpg" alt="user dashboard">
+<img src="screenshots/admin_panel_example.jpg" alt="admin panel example">
+<img src="screenshots/user_posts.jpg" alt="user posts">
+<img src="screenshots/user_comments.jpg" alt="user comments">
 
 # License
 Distributed under the MIT License.
